@@ -26,8 +26,9 @@ public class GameStage extends Stage {
     }
 
     public void addNewTarget() {
-        Target t = new Target("badlogic.jpg");
-        t.setVelocity(100, 100);
+        Target t = new Target("box.png");
+        t.applyImpulse(100, 100);
+        t.applyForce(-100, 100);
         t.setTouchable(Touchable.enabled);
         addActor(t);
     }

@@ -1,29 +1,38 @@
 package com.oliveshark.blaster.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.oliveshark.blaster.util.Vector2d;
 
 public abstract class AbstractEntity extends Actor {
 
-    protected final Texture texture;
-    protected final Vector2d<Double> position = new Vector2d<>(0d, 0d);
-
+    protected final Sprite sprite;
     protected boolean alive = true;
 
     public AbstractEntity(String path) {
-        texture = new Texture(Gdx.files.internal(path));
+        sprite = new Sprite(new Texture(Gdx.files.internal(path)));
+        setWidth(sprite.getWidth());
+        setHeight(sprite.getHeight());
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, position.getX().intValue(), position.getY().intValue());
-    }
+    	super.draw(batch, parentAlpha);
+    	sprite.draw(batch);
 
-    public Vector2d<Double> getPosition() {
-        return position;
+    	if (getDebug()) {
+			ShapeRenderer shape = new ShapeRenderer();
+			shape.setColor(Color.RED);
+			shape.setAutoShapeType(true);
+			shape.begin();
+			drawDebug(shape);
+			drawDebugBounds(shape);
+			shape.end();
+		}
     }
 
     public boolean isAlive() {
@@ -34,9 +43,17 @@ public abstract class AbstractEntity extends Actor {
         this.alive = alive;
     }
 
-    @Override
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		sprite.setOrigin(getOriginX(), getOriginY());
+		sprite.setRotation(getRotation());
+		sprite.setScale(getScaleX(), getScaleY());
+		sprite.setPosition(getX(), getY());
+	}
+
+	@Override
     public boolean remove() {
-        texture.dispose();
         return super.remove();
     }
 }

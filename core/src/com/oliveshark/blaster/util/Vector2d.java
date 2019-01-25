@@ -30,6 +30,11 @@ public class Vector2d<T extends Number> {
         }
     }
 
+    public void set(T x, T y) {
+    	this.x = x;
+    	this.y = y;
+	}
+
     public T getX() {
         return x;
     }
