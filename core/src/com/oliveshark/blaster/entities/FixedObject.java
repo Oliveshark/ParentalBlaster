@@ -3,7 +3,8 @@ package com.oliveshark.blaster.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.oliveshark.blaster.entities.comp.StaticPhysicsComponent;
-import com.oliveshark.blaster.util.CollisionUtil;
+
+import static com.oliveshark.blaster.util.CollisionUtil.AABB;
 
 public class FixedObject extends AbstractEntity {
 
@@ -17,7 +18,7 @@ public class FixedObject extends AbstractEntity {
 	public void act(float delta) {
 		super.act(delta);
 
-		if (!CollisionUtil.AABB(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), sprite.getBoundingRectangle())) {
+		if (!AABB(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), sprite.getBoundingRectangle())) {
 			alive = false;
 		}
 	}

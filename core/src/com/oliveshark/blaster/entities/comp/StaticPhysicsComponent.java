@@ -38,6 +38,6 @@ public class StaticPhysicsComponent implements Component {
 
 	@Override
 	public void dispose() {
-
+		Box2d.world.destroyBody(body);
 	}
 }
