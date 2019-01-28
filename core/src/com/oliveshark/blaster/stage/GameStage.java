@@ -1,9 +1,11 @@
 package com.oliveshark.blaster.stage;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Timer;
+import com.oliveshark.blaster.entities.FixedObject;
 import com.oliveshark.blaster.entities.Target;
 
 public class GameStage extends Stage {
@@ -11,6 +13,7 @@ public class GameStage extends Stage {
     Timer spawnTimer = new Timer();
 
     public void build() {
+		addStaticBlocks();
         addNewTarget();
         initSpawnTimer();
     }
@@ -25,13 +28,16 @@ public class GameStage extends Stage {
         spawnTimer.start();
     }
 
-    public void addNewTarget() {
+    private void addNewTarget() {
         Target t = new Target("box.png");
-        t.applyImpulse(100, 100);
-        t.applyForce(-100, 100);
         t.setTouchable(Touchable.enabled);
         addActor(t);
     }
+
+    private void addStaticBlocks() {
+		addActor(new FixedObject("box.png", new Rectangle(200, 0, 256, 64)));
+		addActor(new FixedObject("box.png", new Rectangle(456, 0, 64, 256)));
+	}
 
     @Override
     public void act(float delta) {

@@ -1,5 +1,8 @@
 package com.oliveshark.blaster.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,11 +10,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.oliveshark.blaster.entities.comp.Component;
 
 public abstract class AbstractEntity extends Actor {
 
     protected final Sprite sprite;
     protected boolean alive = true;
+
+    protected final Set<Component> components = new HashSet<>();
 
     public AbstractEntity(String path) {
         sprite = new Sprite(new Texture(Gdx.files.internal(path)));
@@ -46,14 +52,21 @@ public abstract class AbstractEntity extends Actor {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		components.forEach(comp -> comp.act(this));
+
 		sprite.setOrigin(getOriginX(), getOriginY());
 		sprite.setRotation(getRotation());
 		sprite.setScale(getScaleX(), getScaleY());
-		sprite.setPosition(getX(), getY());
+		sprite.setBounds(getX(), getY(), getWidth(), getHeight());
+	}
+
+	public Set<Component> getComponents() {
+    	return components;
 	}
 
 	@Override
-    public boolean remove() {
-        return super.remove();
-    }
+	public boolean remove() {
+    	components.stream().forEach(Component::dispose);
+		return super.remove();
+	}
 }
