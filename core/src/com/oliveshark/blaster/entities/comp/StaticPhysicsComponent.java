@@ -32,11 +32,6 @@ public class StaticPhysicsComponent implements Component {
 	}
 
 	@Override
-	public void act(AbstractEntity entity) {
-		// PASS
-	}
-
-	@Override
 	public void dispose() {
 		Box2d.world.destroyBody(body);
 	}

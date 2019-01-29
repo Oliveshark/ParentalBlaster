@@ -4,7 +4,9 @@ import com.oliveshark.blaster.entities.AbstractEntity;
 
 public interface Component {
 
-	void act(AbstractEntity entity);
+	default void act(float deltatime) {
+	}
 
-	void dispose();
+	default void dispose() {
+	}
 }

@@ -14,9 +14,11 @@ import static com.oliveshark.blaster.Box2d.PPM;
 
 public class DynamicPhysicsComponent implements Component {
 
+	private final AbstractEntity entity;
 	private Body body;
 
 	public DynamicPhysicsComponent(AbstractEntity entity) {
+		this.entity = entity;
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set((entity.getX() + entity.getWidth()/2)/PPM, (entity.getY() + entity.getHeight()/2)/PPM);
@@ -40,7 +42,7 @@ public class DynamicPhysicsComponent implements Component {
 	}
 
 	@Override
-	public void act(AbstractEntity entity) {
+	public void act(float deltatime) {
 		entity.setPosition(body.getPosition().x * PPM - (entity.getWidth()/2), body.getPosition().y * PPM - entity.getHeight()/2);
 		entity.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 	}

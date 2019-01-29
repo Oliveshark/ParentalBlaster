@@ -2,16 +2,15 @@ package com.oliveshark.blaster.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
-import com.oliveshark.blaster.entities.comp.StaticPhysicsComponent;
 
 import static com.oliveshark.blaster.util.CollisionUtil.AABB;
 
-public class FixedObject extends AbstractEntity {
+public class Box extends AbstractEntity {
 
-	public FixedObject(String path, Rectangle bounds) {
+	public Box(String path, Rectangle bounds) {
 		super(path);
 		setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-		components.add(new StaticPhysicsComponent(this));
+		setOrigin(getWidth()/2, getHeight()/2);
 	}
 
 	@Override

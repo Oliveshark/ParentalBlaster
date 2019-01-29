@@ -14,15 +14,15 @@ import com.oliveshark.blaster.entities.comp.Component;
 
 public abstract class AbstractEntity extends Actor {
 
-    protected final Sprite sprite;
-    protected boolean alive = true;
+    final Sprite sprite;
+    boolean alive = true;
 
-    protected final Set<Component> components = new HashSet<>();
+    final Set<Component> components = new HashSet<>();
 
-    public AbstractEntity(String path) {
+    AbstractEntity(String path) {
         sprite = new Sprite(new Texture(Gdx.files.internal(path)));
-        setWidth(sprite.getWidth());
-        setHeight(sprite.getHeight());
+		setWidth(sprite.getWidth());
+		setHeight(sprite.getHeight());
     }
 
     @Override
@@ -52,7 +52,7 @@ public abstract class AbstractEntity extends Actor {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		components.forEach(comp -> comp.act(this));
+		components.forEach(comp -> comp.act(delta));
 
 		sprite.setOrigin(getOriginX(), getOriginY());
 		sprite.setRotation(getRotation());
