@@ -4,11 +4,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.oliveshark.blaster.Box2d;
-import com.oliveshark.blaster.entities.AbstractEntity;
+import com.oliveshark.blaster.entities.Entity;
 
 public class StaticPhysicsComponent extends AbstractPhysicsComponent {
 
-	public StaticPhysicsComponent(AbstractEntity entity) {
+	public StaticPhysicsComponent(Entity entity) {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
 		bodyDef.position.set((entity.getX() + entity.getWidth()/2), (entity.getY() + entity.getHeight()/2));

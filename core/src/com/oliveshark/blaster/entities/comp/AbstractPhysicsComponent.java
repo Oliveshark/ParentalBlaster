@@ -5,25 +5,19 @@ import java.util.List;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.oliveshark.blaster.Box2d;
-import com.oliveshark.blaster.entities.AbstractEntity;
+import com.oliveshark.blaster.entities.Entity;
 
 import box2dLight.Light;
 import box2dLight.PointLight;
 
 public abstract class AbstractPhysicsComponent implements Component {
 
-	protected AbstractEntity entity;
-	protected Body body;
+	Entity entity;
+	Body body;
 	private final List<Light> lights = new ArrayList<>();
 
 	public Body getBody() {
 		return body;
-	}
-
-	@Override
-	public void dispose() {
-		clearLights();
-		Box2d.world.destroyBody(body);
 	}
 
 	public void addLight(PointLight light, float x, float y) {
@@ -34,8 +28,16 @@ public abstract class AbstractPhysicsComponent implements Component {
 		light.attachToBody(body);
 	}
 
-	public void clearLights() {
-		lights.forEach(Light::remove);
+	private void clearLights() {
+		for (Light light : lights) {
+			light.remove();
+		}
 		lights.clear();
+	}
+
+	@Override
+	public void dispose() {
+		clearLights();
+		Box2d.world.destroyBody(body);
 	}
 }

@@ -126,3 +126,4 @@ Thumbs.db
 
 # Custom
 /tags
+.attach_*

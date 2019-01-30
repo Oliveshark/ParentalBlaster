@@ -6,12 +6,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.oliveshark.blaster.Box2d;
-import com.oliveshark.blaster.entities.AbstractEntity;
+import com.oliveshark.blaster.entities.Entity;
 
 
 public class DynamicPhysicsComponent extends AbstractPhysicsComponent {
 
-	public DynamicPhysicsComponent(AbstractEntity entity) {
+	public DynamicPhysicsComponent(Entity entity) {
 		this.entity = entity;
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;

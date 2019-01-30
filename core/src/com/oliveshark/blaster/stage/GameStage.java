@@ -12,9 +12,10 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.oliveshark.blaster.Box2d;
-import com.oliveshark.blaster.entities.Box;
+import com.oliveshark.blaster.entities.OnScreenEntity;
 import com.oliveshark.blaster.entities.comp.AbstractPhysicsComponent;
 import com.oliveshark.blaster.entities.comp.DynamicPhysicsComponent;
+import com.oliveshark.blaster.entities.comp.SpriteComponent;
 import com.oliveshark.blaster.entities.comp.StaticPhysicsComponent;
 import com.oliveshark.blaster.entities.comp.TouchToKillComponent;
 
@@ -58,9 +59,9 @@ public class GameStage extends Stage {
     }
 
     private void addNewTarget() {
-        Box t = new Box("box.png", new Rectangle(0, 3, 2, 2));
+        OnScreenEntity target = new OnScreenEntity(new Rectangle(0, 3, 2, 2));
 
-		AbstractPhysicsComponent comp = new DynamicPhysicsComponent(t);
+		AbstractPhysicsComponent comp = new DynamicPhysicsComponent(target);
 		PointLight light = new PointLight(rayHandler, 128, null, 16, 0, 0);
 		light.setColor(
 				MathUtils.random(),
@@ -70,11 +71,11 @@ public class GameStage extends Stage {
 				);
 		comp.addLight(light, 0, 0);
 
-        t.getComponents().add(comp);
-        t.getComponents().add(new TouchToKillComponent(t));
+        target.getComponents().add(comp);
+        target.getComponents().add(new TouchToKillComponent(target));
+        target.getComponents().add(new SpriteComponent(target, "box.png"));
 
-
-		addActor(t);
+		addActor(target);
     }
 
     private void addStaticBoxes() {
@@ -83,8 +84,9 @@ public class GameStage extends Stage {
 	}
 
 	private void addStaticBoxAt(Rectangle rect) {
-    	Box box = new Box("box.png", rect);
+    	OnScreenEntity box = new OnScreenEntity(rect);
     	box.getComponents().add(new StaticPhysicsComponent(box));
+    	box.getComponents().add(new SpriteComponent(box, "box.png"));
     	addActor(box);
 	}
 
@@ -113,8 +115,8 @@ public class GameStage extends Stage {
         super.act(delta);
 
         for (Actor actor : getActors()) {
-            if (actor instanceof Box) {
-				if (((Box) actor).isAlive()) {
+            if (actor instanceof OnScreenEntity) {
+				if (((OnScreenEntity) actor).isAlive()) {
 					continue;
 				}
 				actor.remove();
