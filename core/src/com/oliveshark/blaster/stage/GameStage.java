@@ -12,7 +12,8 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.oliveshark.blaster.Box2d;
 import com.oliveshark.blaster.entities.OnScreenEntity;
 import com.oliveshark.blaster.entities.comp.AbstractPhysicsComponent;
-import com.oliveshark.blaster.entities.comp.DynamicPhysicsComponent;
+import com.oliveshark.blaster.entities.comp.BoxPhysicsComponent;
+import com.oliveshark.blaster.entities.comp.CirclePhysicsComponent;
 import com.oliveshark.blaster.entities.comp.SpriteComponent;
 import com.oliveshark.blaster.entities.comp.StaticPhysicsComponent;
 import com.oliveshark.blaster.entities.comp.TouchToKillComponent;
@@ -20,8 +21,6 @@ import com.oliveshark.blaster.entities.comp.TouchToKillComponent;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import static com.oliveshark.blaster.Box2d.PPM;
-import static com.oliveshark.blaster.entities.comp.DynamicPhysicsComponent.BodyShape.ROUND;
-import static com.oliveshark.blaster.entities.comp.DynamicPhysicsComponent.BodyShape.SQUARE;
 
 public class GameStage extends Stage {
 
@@ -79,10 +78,15 @@ public class GameStage extends Stage {
 
 	private void addNewTarget() {
 		OnScreenEntity target = new OnScreenEntity(new Rectangle(0, 3, 2, 2));
+		boolean boxShape = MathUtils.random(1) == 1;
 
-		DynamicPhysicsComponent.BodyShape shape = MathUtils.random(1) == 1 ? SQUARE : ROUND;
+		AbstractPhysicsComponent comp;
+		if (boxShape) {
+			comp = new BoxPhysicsComponent(target);
+		} else {
+			comp = new CirclePhysicsComponent(target);
+		}
 
-		AbstractPhysicsComponent comp = new DynamicPhysicsComponent(target, shape);
 		PointLight light = new PointLight(rayHandler, 128, null, 16, 0, 0);
 		light.setColor(
 				MathUtils.random(),
@@ -94,7 +98,7 @@ public class GameStage extends Stage {
 
         target.getComponents().add(comp);
         target.getComponents().add(new TouchToKillComponent(target));
-        if (shape == SQUARE) {
+        if (boxShape) {
 			target.getComponents().add(new SpriteComponent(target, "box.png"));
 		} else {
 			target.getComponents().add(new SpriteComponent(target, roundTexturePaths[MathUtils.random(roundTexturePaths.length - 1)]));
