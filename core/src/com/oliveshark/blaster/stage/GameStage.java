@@ -1,6 +1,7 @@
 package com.oliveshark.blaster.stage;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,10 +13,11 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.oliveshark.blaster.Box2d;
 import com.oliveshark.blaster.entities.OnScreenEntity;
 import com.oliveshark.blaster.entities.comp.AbstractPhysicsComponent;
-import com.oliveshark.blaster.entities.comp.BoxPhysicsComponent;
-import com.oliveshark.blaster.entities.comp.CirclePhysicsComponent;
+import com.oliveshark.blaster.entities.comp.DynamicCirclePhysicsComponent;
+import com.oliveshark.blaster.entities.comp.DynamicRectanglePhysicsComponent;
 import com.oliveshark.blaster.entities.comp.SpriteComponent;
-import com.oliveshark.blaster.entities.comp.StaticPhysicsComponent;
+import com.oliveshark.blaster.entities.comp.StaticRectanglePhysicsComponent;
+import com.oliveshark.blaster.entities.comp.StaticTrianglePhysicsComponent;
 import com.oliveshark.blaster.entities.comp.TouchToKillComponent;
 
 import box2dLight.PointLight;
@@ -82,9 +84,9 @@ public class GameStage extends Stage {
 
 		AbstractPhysicsComponent comp;
 		if (boxShape) {
-			comp = new BoxPhysicsComponent(target);
+			comp = new DynamicRectanglePhysicsComponent(target);
 		} else {
-			comp = new CirclePhysicsComponent(target);
+			comp = new DynamicCirclePhysicsComponent(target);
 		}
 
 		PointLight light = new PointLight(rayHandler, 128, null, 16, 0, 0);
@@ -110,11 +112,18 @@ public class GameStage extends Stage {
     private void addStaticBoxes() {
 		addStaticBoxAt(new Rectangle(6, 0, 12, 2));
 		addStaticBoxAt(new Rectangle(18, 0, 2, 12));
+
+		OnScreenEntity entity = new OnScreenEntity(new Rectangle(6, 2, 6, 2));
+		AbstractPhysicsComponent comp = new StaticTrianglePhysicsComponent(entity);
+		PointLight light = new PointLight(rayHandler, 128, Color.WHITE, 16, 0, 0);
+		comp.addLight(light, 0, 0);
+		entity.getComponents().add(comp);
+		addActor(entity);
 	}
 
 	private void addStaticBoxAt(Rectangle rect) {
     	OnScreenEntity box = new OnScreenEntity(rect);
-    	box.getComponents().add(new StaticPhysicsComponent(box));
+    	box.getComponents().add(new StaticRectanglePhysicsComponent(box));
     	box.getComponents().add(new SpriteComponent(box, "box.png"));
     	addActor(box);
 	}

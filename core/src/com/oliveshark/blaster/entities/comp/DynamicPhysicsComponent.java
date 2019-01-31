@@ -11,12 +11,12 @@ import com.oliveshark.blaster.entities.Entity;
 public abstract class DynamicPhysicsComponent extends AbstractPhysicsComponent {
 
 	public DynamicPhysicsComponent(Entity entity) {
-		this.entity = entity;
+		super(entity);
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set((entity.getX() + entity.getWidth()/2), (entity.getY() + entity.getHeight()/2));
 
-		Shape shape = createShape(entity);
+		Shape shape = createShape();
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1f;
@@ -30,7 +30,7 @@ public abstract class DynamicPhysicsComponent extends AbstractPhysicsComponent {
 		body.applyLinearImpulse(new Vector2(-10, 10), new Vector2(1, 1), true);
 	}
 
-	protected abstract Shape createShape(Entity entity);
+	protected abstract Shape createShape();
 
 	@Override
 	public void act(float deltatime) {

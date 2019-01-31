@@ -21,6 +21,10 @@ public abstract class AbstractPhysicsComponent implements Component {
 
 	private final List<Light> lights = new ArrayList<>();
 
+	public AbstractPhysicsComponent(Entity entity) {
+		this.entity = entity;
+	}
+
 	public Body getBody() {
 		return body;
 	}

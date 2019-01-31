@@ -4,14 +4,14 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.oliveshark.blaster.entities.Entity;
 
-public class BoxPhysicsComponent extends DynamicPhysicsComponent {
+public class StaticRectanglePhysicsComponent extends StaticPhysicsComponent {
 
-	public BoxPhysicsComponent(Entity entity) {
+	public StaticRectanglePhysicsComponent(Entity entity) {
 		super(entity);
 	}
 
 	@Override
-	protected Shape createShape(Entity entity) {
+	Shape createShape(Entity entity) {
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(entity.getWidth()/2, entity.getHeight()/2);
 		return shape;
