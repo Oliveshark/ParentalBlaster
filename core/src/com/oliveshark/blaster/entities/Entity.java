@@ -43,6 +43,14 @@ public class Entity extends Actor {
     	return new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
 
+	public void setBounds(Rectangle bounds) {
+    	setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+	}
+
+	public void setCenterOrigin() {
+    	setOrigin(getWidth()/2, getHeight()/2);
+	}
+
 	public Set<Component> getComponents() {
     	return components;
 	}

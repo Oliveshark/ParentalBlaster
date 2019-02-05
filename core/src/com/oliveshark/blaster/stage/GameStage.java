@@ -11,14 +11,8 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.oliveshark.blaster.Box2d;
-import com.oliveshark.blaster.entities.OnScreenEntity;
-import com.oliveshark.blaster.entities.comp.AbstractPhysicsComponent;
-import com.oliveshark.blaster.entities.comp.DynamicCirclePhysicsComponent;
-import com.oliveshark.blaster.entities.comp.DynamicRectanglePhysicsComponent;
-import com.oliveshark.blaster.entities.comp.SpriteComponent;
-import com.oliveshark.blaster.entities.comp.StaticRectanglePhysicsComponent;
-import com.oliveshark.blaster.entities.comp.StaticTrianglePhysicsComponent;
-import com.oliveshark.blaster.entities.comp.TouchToKillComponent;
+import com.oliveshark.blaster.entities.Entity;
+import com.oliveshark.blaster.entities.comp.*;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
@@ -79,10 +73,12 @@ public class GameStage extends Stage {
 
 
 	private void addNewTarget() {
-		OnScreenEntity target = new OnScreenEntity(new Rectangle(0, 3, 2, 2));
-		boolean boxShape = MathUtils.random(1) == 1;
+		Entity target = new Entity();
+		target.setBounds(0, 3, 2, 2);
+		target.setCenterOrigin();
 
 		AbstractPhysicsComponent comp;
+		boolean boxShape = MathUtils.random(1) == 1;
 		if (boxShape) {
 			comp = new DynamicRectanglePhysicsComponent(target);
 		} else {
@@ -99,6 +95,7 @@ public class GameStage extends Stage {
 		comp.addLight(light, 0, 0);
 
         target.getComponents().add(comp);
+		target.getComponents().add(new RemoveWhenOffScreenComponent(target));
         target.getComponents().add(new TouchToKillComponent(target));
         if (boxShape) {
 			target.getComponents().add(new SpriteComponent(target, "box.png"));
@@ -113,7 +110,9 @@ public class GameStage extends Stage {
 		addStaticBoxAt(new Rectangle(6, 0, 12, 2));
 		addStaticBoxAt(new Rectangle(18, 0, 2, 12));
 
-		OnScreenEntity entity = new OnScreenEntity(new Rectangle(6, 2, 6, 2));
+		Entity entity = new Entity();
+		entity.setBounds(6, 2, 6, 2);
+		entity.setCenterOrigin();
 		AbstractPhysicsComponent comp = new StaticTrianglePhysicsComponent(entity);
 		PointLight light = new PointLight(rayHandler, 128, Color.WHITE, 16, 0, 0);
 		comp.addLight(light, 0, 0);
@@ -122,7 +121,9 @@ public class GameStage extends Stage {
 	}
 
 	private void addStaticBoxAt(Rectangle rect) {
-    	OnScreenEntity box = new OnScreenEntity(rect);
+    	Entity box = new Entity();
+    	box.setBounds(rect);
+    	box.setCenterOrigin();
     	box.getComponents().add(new StaticRectanglePhysicsComponent(box));
     	box.getComponents().add(new SpriteComponent(box, "box.png"));
     	addActor(box);
@@ -141,8 +142,8 @@ public class GameStage extends Stage {
         super.act(delta);
 
         for (Actor actor : getActors()) {
-            if (actor instanceof OnScreenEntity) {
-				if (((OnScreenEntity) actor).isAlive()) {
+            if (actor instanceof Entity) {
+				if (((Entity) actor).isAlive()) {
 					continue;
 				}
 				actor.remove();
