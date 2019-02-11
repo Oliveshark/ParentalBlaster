@@ -79,6 +79,7 @@ public class GameStage extends Stage {
 
 		AbstractPhysicsComponent comp;
 		boolean boxShape = MathUtils.random(1) == 1;
+		boolean fishLogo = MathUtils.random(1) == 1;
 		if (boxShape) {
 			comp = new DynamicRectanglePhysicsComponent(target);
 		} else {
@@ -98,7 +99,11 @@ public class GameStage extends Stage {
 		target.getComponents().add(new RemoveWhenOffScreenComponent(target));
         target.getComponents().add(new TouchToKillComponent(target));
         if (boxShape) {
-			target.getComponents().add(new SpriteComponent(target, "box.png"));
+        	if (fishLogo) {
+				target.getComponents().add(new SpriteComponent(target, "oliveshark_logo_large.png"));
+			} else {
+				target.getComponents().add(new SpriteComponent(target, "box.png"));
+			}
 		} else {
 			target.getComponents().add(new SpriteComponent(target, roundTexturePaths[MathUtils.random(roundTexturePaths.length - 1)]));
 		}
